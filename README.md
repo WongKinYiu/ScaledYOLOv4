@@ -21,7 +21,7 @@ make -j4
 
 ## Testing
 
-`[yolov4-tiny.weights]`(https://drive.google.com/file/d/1XLVy_DMjvhhmHucSypL3zeDGDdmCGrsu/view?usp=sharing)
+[`yolov4-tiny.weights`](https://drive.google.com/file/d/1XLVy_DMjvhhmHucSypL3zeDGDdmCGrsu/view?usp=sharing)
 
 ```
 # download yolov4-tiny.weights and put it in /yolo/weights/ folder.

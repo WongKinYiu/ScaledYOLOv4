@@ -66,7 +66,7 @@ python -m torch.distributed.launch --nproc_per_node 4 train.py --device 0,1,2,3 
 ## Citation
 
 ```
-@article{bochkovskiy2020yolov4,
+@article{wang2020scaled,
   title={{Scaled-YOLOv4}: Scaling Cross Stage Partial Network},
   author={Wang, Chien-Yao and Bochkovskiy, Alexey and Liao, Hong-Yuan Mark},
   journal={arXiv preprint arXiv:2011.08036},

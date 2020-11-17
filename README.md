@@ -1,6 +1,8 @@
 # YOLOv4-CSP
 
-This is the implementation of "Scaled-YOLOv4: Scaling Cross Stage Partial Network" using PyTorch framwork.
+This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Network](https://arxiv.org/abs/2011.08036)" using PyTorch framwork.
+
+* **2020.11.16** Now supported by [Darknet](https://github.com/AlexeyAB/darknet). `[yolo] new_coords=1` 
 
 ## Installation
 
@@ -19,6 +21,8 @@ cd /yolo
 ```
 
 ## Testing
+
+[`yolov4-csp.weights`](https://drive.google.com/file/d/1NQwz47cW0NUgy7L3_xOKaNEfLoQuq3EL/view?usp=sharing)
 
 ```
 # download yolov4-csp.weights and put it in /yolo/weights/ folder.
@@ -57,4 +61,15 @@ python train.py --device 0 --batch-size 16 --data coco.yaml --cfg yolov4-csp.cfg
 If you want to use multiple GPUs for training
 ```
 python -m torch.distributed.launch --nproc_per_node 4 train.py --device 0,1,2,3 --batch-size 64 --data coco.yaml --cfg yolov4-csp.cfg --weights '' --name yolov4-csp --sync-bn
+```
+
+## Citation
+
+```
+@article{bochkovskiy2020yolov4,
+  title={{Scaled-YOLOv4}: Scaling Cross Stage Partial Network},
+  author={Wang, Chien-Yao and Bochkovskiy, Alexey and Liao, Hong-Yuan Mark},
+  journal={arXiv preprint arXiv:2011.08036},
+  year={2020}
+}
 ```

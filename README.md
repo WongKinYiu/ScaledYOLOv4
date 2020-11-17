@@ -1,6 +1,8 @@
 # YOLOv4-tiny
 
-This is the implementation of "Scaled-YOLOv4: Scaling Cross Stage Partial Network" using Darknet framwork.
+This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Network](https://arxiv.org/abs/2011.08036)" using Darknet framwork.
+
+The implementation is supported by [Darknet](https://github.com/AlexeyAB/darknet), just use it.
 
 ## Installation
 
@@ -18,6 +20,8 @@ make -j4
 ```
 
 ## Testing
+
+`[yolov4-tiny.weights]`(https://drive.google.com/file/d/1XLVy_DMjvhhmHucSypL3zeDGDdmCGrsu/view?usp=sharing)
 
 ```
 # download yolov4-tiny.weights and put it in /yolo/weights/ folder.
@@ -51,4 +55,15 @@ For resume training:
 ```
 # assume the checkpoint is stored in ./coco/.
 ./darknet detector train cfg/coco.data cfg/yolov4-tiny.cfg coco/yolov4-tiny_last.weights -gpus 0 -dont_show
+```
+
+## Citation
+
+```
+@article{wang2020scaled,
+  title={{Scaled-YOLOv4}: Scaling Cross Stage Partial Network},
+  author={Wang, Chien-Yao and Bochkovskiy, Alexey and Liao, Hong-Yuan Mark},
+  journal={arXiv preprint arXiv:2011.08036},
+  year={2020}
+}
 ```

@@ -18,6 +18,27 @@ python setup.py build install
 cd /yolo
 ```
 
+For using pre-trained models:
+```
+cd /yolo
+git clone https://github.com/thomasbrandon/mish-cuda mc
+cd mc
+
+# change all of name which is mish_cuda to mish_mish and build.
+# 1. mc/src/mish_cuda -> mc/src/mish_mish
+# 2. mc/csrc/mish_cuda.cpp -> mc/csrc/mish_mish.cpp
+# 3. in mc/setup.py
+#   3.1 line 5 -> 'csrc/mish_mish.cpp'
+#   3.2 line 11 -> name='mish_mish'
+#   3.3 line 20 -> 'mish_mish._C'
+
+python setup.py build
+# rename mc/build/lib.xxx folder to mc/build/lib
+
+# modify import in models/common.py
+# line 7 -> from mc.build.lib.mish_mish import MishCuda as Mish
+```
+
 ## Testing
 
 [`yolov4-p5.pt`](https://drive.google.com/file/d/1aXZZE999sHMP1gev60XhNChtHPRMH3Fz/view?usp=sharing) [`yolov4-p6.pt`](https://drive.google.com/file/d/1aB7May8oPYzBqbgwYSZHuATPXyxh9xnf/view?usp=sharing) [`yolov4-p7.pt`](https://drive.google.com/file/d/18fGlzgEJTkUEiBG4hW00pyedJKNnYLP3/view?usp=sharing) 

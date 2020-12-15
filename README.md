@@ -10,7 +10,8 @@ This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Netwo
 
 ## Train on Your Custom Objects
 
-* https://blog.roboflow.com/how-to-train-scaled-yolov4/
+* [Custom Training Blog](https://blog.roboflow.com/how-to-train-scaled-yolov4/)
+* [Custom Training Colab Notebook](https://colab.research.google.com/drive/1LDmg0JRiC2N7_tx8wQoBzTB0jUZhywQr#scrollTo=ZZ3DmmGQztJj)
 
 ## Citation
 

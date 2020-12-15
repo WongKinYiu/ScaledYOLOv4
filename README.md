@@ -8,7 +8,7 @@ This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Netwo
 * [YOLOv4-tiny](https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-tiny)
 * [YOLOv4-large](https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-large)
 
-## Custom Training
+## Train on Your Custom Objects
 
 * https://blog.roboflow.com/how-to-train-scaled-yolov4/
 

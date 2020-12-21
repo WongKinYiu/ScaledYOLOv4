@@ -32,35 +32,14 @@ This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Netwo
 # create the docker container, you can change the share memory size if you have more.
 nvidia-docker run --name yolov4_csp -it -v your_coco_path/:/coco/ -v your_code_path/:/yolo --shm-size=64g nvcr.io/nvidia/pytorch:20.06-py3
 
-# install mish-cuda, if you use different pytorch version, you could try https://github.com/JunnYu/mish-cuda
+# install mish-cuda, if you use different pytorch version, you could try https://github.com/thomasbrandon/mish-cuda
 cd /
-git clone https://github.com/thomasbrandon/mish-cuda
+git clone https://github.com/JunnYu/mish-cuda
 cd mish-cuda
 python setup.py build install
 
 # go to code folder
 cd /yolo
-```
-
-For using pre-trained models:
-```
-cd /yolo
-git clone https://github.com/thomasbrandon/mish-cuda mc
-cd mc
-
-# change all of name which is mish_cuda to mish_mish and build.
-# 1. mc/src/mish_cuda -> mc/src/mish_mish
-# 2. mc/csrc/mish_cuda.cpp -> mc/csrc/mish_mish.cpp
-# 3. in mc/setup.py
-#   3.1 line 5 -> 'csrc/mish_mish.cpp'
-#   3.2 line 11 -> name='mish_mish'
-#   3.3 line 20 -> 'mish_mish._C'
-
-python setup.py build
-# rename mc/build/lib.xxx folder to mc/build/lib
-
-# modify import in models/common.py
-# line 7 -> from mc.build.lib.mish_mish import MishCuda as Mish
 ```
 
 ## Testing

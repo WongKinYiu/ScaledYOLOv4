@@ -56,18 +56,20 @@ def train(hyp, opt, device, tb_writer=None):
     nc, names = (1, ['item']) if opt.single_cls else (int(data_dict['nc']), data_dict['names'])  # number classes, names
     assert len(names) == nc, '%g names found for nc=%g dataset in %s' % (len(names), nc, opt.data)  # check
 
-    # Model
-    pretrained = weights.endswith('.pt')
-    if pretrained:
+    # Create Model
+    model = Darknet(opt.cfg).to(device)
+
+    # Load pretrained weights
+    pretrained_ckpt = weights.endswith('.pt')
+    if pretrained_ckpt:
         with torch_distributed_zero_first(rank):
             attempt_download(weights)  # download if not found locally
         ckpt = torch.load(weights, map_location=device)  # load checkpoint
-        model = Darknet(opt.cfg).to(device)  # create
         state_dict = {k: v for k, v in ckpt['model'].items() if model.state_dict()[k].numel() == v.numel()}
         model.load_state_dict(state_dict, strict=False)
         print('Transferred %g/%g items from %s' % (len(state_dict), len(model.state_dict()), weights))  # report
-    else:
-        model = Darknet(opt.cfg).to(device) # create
+    elif weights.endswith('.weights'):
+        load_darknet_weights(model, weights)        
 
     # Optimizer
     nbs = 64  # nominal batch size
@@ -101,7 +103,7 @@ def train(hyp, opt, device, tb_writer=None):
 
     # Resume
     start_epoch, best_fitness = 0, 0.0
-    if pretrained:
+    if pretrained_ckpt:
         # Optimizer
         if ckpt['optimizer'] is not None:
             optimizer.load_state_dict(ckpt['optimizer'])

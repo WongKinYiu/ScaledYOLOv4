@@ -1,0 +1,10 @@
+# train and val datasets (image directory or *.txt file with image paths)
+train: data/speedco_train_images.txt
+val: data/speedco_val_images.txt
+test: data/speedco_val_images.txt
+
+# number of classes
+nc: 1
+
+# class names
+names: ['truck']

@@ -1,6 +1,6 @@
 import torch.nn.functional as F
 
-from utils.general import *
+from yolo.utils.general import *
 
 import torch
 from torch import nn

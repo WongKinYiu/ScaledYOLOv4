@@ -25,6 +25,8 @@ This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Netwo
 | **YOLOv4-P6** | TTA | **54.4%** | **72.3%** | **59.6%** | **39.8%** | **58.9%** | **67.6%** | - |
 | **YOLOv4-P6** (+BoF) | 1280 | **54.4%** | **72.7%** | **59.5%** | **39.5%** | **58.9%** | **67.3%** | [`yolov4-p6_.pt`](https://drive.google.com/file/d/1Q8oG3lBVVoS0-UwNOBsDsPkq9VKs9UcC/view?usp=sharing) |
 | **YOLOv4-P6** (+BoF) | TTA | **54.8%** | **72.6%** | **60.0%** | **40.6%** | **59.1%** | **68.2%** | - |
+| **YOLOv4-P6** (+BoF*) | 1280 | **54.7%** | **72.9%** | **60.0%** | **39.4%** | **59.2%** | **68.3%** |  |
+| **YOLOv4-P6** (+BoF*) | TTA | **55.3%** | **73.2%** | **60.8%** | **40.5%** | **59.9%** | **69.4%** | - |
 |  |  |  |  |  |  |  |  |
 | **YOLOv4-P7** | 1536 | **55.0%** | **72.9%** | **60.2%** | **39.8%** | **59.9%** | **68.4%** | [`yolov4-p7.pt`](https://drive.google.com/file/d/18fGlzgEJTkUEiBG4hW00pyedJKNnYLP3/view?usp=sharing)  |
 | **YOLOv4-P7** | TTA | **55.5%** | **72.9%** | **60.8%** | **41.1%** | **60.3%** | **68.9%** | - |

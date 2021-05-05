@@ -63,6 +63,9 @@ If you want to use multiple GPUs for training
 python -m torch.distributed.launch --nproc_per_node 4 train.py --device 0,1,2,3 --batch-size 64 --data coco.yaml --cfg yolov4-csp.cfg --weights '' --name yolov4-csp --sync-bn
 ```
 
+# TensorRT 
+yolov4-csp implementation in TensorRT - https://github.com/makaveli10/scaled-yolov4-tensorrt
+
 ## Citation
 
 ```

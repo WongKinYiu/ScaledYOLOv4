@@ -1,5 +1,12 @@
 # Welcome
 
+Scaled-YOLOv4: Scaling Cross Stage Partial Network is yolov4-csp. Actual produces erros on CPU so there is a bit modification. This is a small code to build API for newcomers. Please refer to [this original link for Scaled Yolov4 AKA yolov4-csp](https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-csp)
+
+Implementation is in `Pytorch` but you can use the `DarkNet`. Please refer to the original documentation.
+
+
+# Why Fork?
+
 If you are here, it means that you must be looking for a way to Deploy Scaled Yolov4 model using CPU. Original implementation uses `mishcuda` on the model loading itself so it generates error. `yolov4-csp` is actually `Scaled Yolov4`. 
 
 Steps:

@@ -2,7 +2,9 @@
 
 This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Network](https://arxiv.org/abs/2011.08036)" using PyTorch framwork.
 
-* **2020.11.16** Now supported by [Darknet](https://github.com/AlexeyAB/darknet). [`yolov4-csp.cfg`](https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-csp.cfg) [`yolov4-csp.weights`](https://drive.google.com/file/d/1NQwz47cW0NUgy7L3_xOKaNEfLoQuq3EL/view?usp=sharing)
+* **2021.05.21** Due to unknown issue some people can not reproduce the performance in paper and I can not reproduce the [issue#89](https://github.com/WongKinYiu/ScaledYOLOv4/issues/89), I update the codebase. But it will makes the reproduce performance becomes better than paper (47.8 AP -> 48.7 AP).
+
+* **2020.11.16** Now supported by [Darknet](https://github.com/AlexeyAB/darknet). [`yolov4-csp.cfg`](https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-csp.cfg) [`yolov4-csp.weights`](https://drive.google.com/file/d/1TdKvDQb2QpP4EhOIyks8kgT8dgI1iOWT/view?usp=sharing)
 
 ## Installation
 
@@ -31,7 +33,13 @@ cd /yolo
 
 ## Testing
 
+[`yolov4-csp.weights`](https://drive.google.com/file/d/1TdKvDQb2QpP4EhOIyks8kgT8dgI1iOWT/view?usp=sharing)
+
+<details><summary> <b>old weights</b> </summary>
+ 
 [`yolov4-csp.weights`](https://drive.google.com/file/d/1NQwz47cW0NUgy7L3_xOKaNEfLoQuq3EL/view?usp=sharing)
+
+</details>
 
 ```
 # download yolov4-csp.weights and put it in /yolo/weights/ folder.
@@ -39,6 +47,22 @@ python test.py --img 640 --conf 0.001 --iou 0.65 --batch 8 --device 0 --data coc
 ```
 
 You will get the results:
+```
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.48656
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.67002
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.52739
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.33082
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.54036
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.62107
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.37197
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.61211
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.66544
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.49676
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.72018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.80528
+```
+<details><summary> <b>old results</b> </summary>
+ 
 ```
  Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.47827
  Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.66448
@@ -53,6 +77,8 @@ You will get the results:
  Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.70892
  Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.79914
 ```
+
+</details>
 
 ## Training
 

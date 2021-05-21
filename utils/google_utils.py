@@ -1,41 +1,58 @@
-# This file contains google utils: https://cloud.google.com/storage/docs/reference/libraries
-# pip install --upgrade google-cloud-storage
-# from google.cloud import storage
+# Google utils: https://cloud.google.com/storage/docs/reference/libraries
 
 import os
 import platform
+import subprocess
 import time
 from pathlib import Path
+
+import torch
+
+
+def gsutil_getsize(url=''):
+    # gs://bucket/file size https://cloud.google.com/storage/docs/gsutil/commands/du
+    s = subprocess.check_output('gsutil du %s' % url, shell=True).decode('utf-8')
+    return eval(s.split(' ')[0]) if len(s) else 0  # bytes
 
 
 def attempt_download(weights):
     # Attempt to download pretrained weights if not found locally
     weights = weights.strip().replace("'", '')
-    msg = weights + ' missing'
+    file = Path(weights).name
 
-    r = 1  # return
-    if len(weights) > 0 and not os.path.isfile(weights):
-        d = {'': '',
-             }
+    msg = weights + ' missing, try downloading from https://github.com/WongKinYiu/ScaledYOLOv4/releases/'
+    models = ['yolov4-csp.pt', 'yolov4-csp-x.pt']  # available models
 
-        file = Path(weights).name
-        if file in d:
-            r = gdrive_download(id=d[file], name=weights)
+    if file in models and not os.path.isfile(weights):
 
-        if not (r == 0 and os.path.exists(weights) and os.path.getsize(weights) > 1E6):  # weights exist and > 1MB
-            os.remove(weights) if os.path.exists(weights) else None  # remove partial downloads
-            s = 'curl -L -o %s "storage.googleapis.com/%s"' % (weights, file)
-            r = os.system(s)  # execute, capture return values
+        try:  # GitHub
+            url = 'https://github.com/WongKinYiu/ScaledYOLOv4/releases/download/v1.0/' + file
+            print('Downloading %s to %s...' % (url, weights))
+            torch.hub.download_url_to_file(url, weights)
+            assert os.path.exists(weights) and os.path.getsize(weights) > 1E6  # check
+        except Exception as e:  # GCP
+            print('ERROR: Download failure.')
+            print('')
+            
+            
+def attempt_load(weights, map_location=None):
+    # Loads an ensemble of models weights=[a,b,c] or a single model weights=[a] or weights=a
+    model = Ensemble()
+    for w in weights if isinstance(weights, list) else [weights]:
+        attempt_download(w)
+        model.append(torch.load(w, map_location=map_location)['model'].float().fuse().eval())  # load FP32 model
 
-            # Error check
-            if not (r == 0 and os.path.exists(weights) and os.path.getsize(weights) > 1E6):  # weights exist and > 1MB
-                os.remove(weights) if os.path.exists(weights) else None  # remove partial downloads
-                raise Exception(msg)
+    if len(model) == 1:
+        return model[-1]  # return model
+    else:
+        print('Ensemble created with %s\n' % weights)
+        for k in ['names', 'stride']:
+            setattr(model, k, getattr(model[-1], k))
+        return model  # return ensemble
 
 
 def gdrive_download(id='1n_oKgR81BJtqk75b00eAjdv03qVCQn2f', name='coco128.zip'):
-    # Downloads a file from Google Drive, accepting presented query
-    # from utils.google_utils import *; gdrive_download()
+    # Downloads a file from Google Drive. from utils.google_utils import *; gdrive_download()
     t = time.time()
 
     print('Downloading https://drive.google.com/uc?export=download&id=%s as %s... ' % (id, name), end='')
@@ -49,7 +66,7 @@ def gdrive_download(id='1n_oKgR81BJtqk75b00eAjdv03qVCQn2f', name='coco128.zip'):
         s = 'curl -Lb ./cookie "drive.google.com/uc?export=download&confirm=%s&id=%s" -o %s' % (get_token(), id, name)
     else:  # small file
         s = 'curl -s -L -o %s "drive.google.com/uc?export=download&id=%s"' % (name, id)
-    r = os.system(s)  # execute, capture return values
+    r = os.system(s)  # execute, capture return
     os.remove('cookie') if os.path.exists('cookie') else None
 
     # Error check
@@ -74,3 +91,30 @@ def get_token(cookie="./cookie"):
             if "download" in line:
                 return line.split()[-1]
     return ""
+
+# def upload_blob(bucket_name, source_file_name, destination_blob_name):
+#     # Uploads a file to a bucket
+#     # https://cloud.google.com/storage/docs/uploading-objects#storage-upload-object-python
+#
+#     storage_client = storage.Client()
+#     bucket = storage_client.get_bucket(bucket_name)
+#     blob = bucket.blob(destination_blob_name)
+#
+#     blob.upload_from_filename(source_file_name)
+#
+#     print('File {} uploaded to {}.'.format(
+#         source_file_name,
+#         destination_blob_name))
+#
+#
+# def download_blob(bucket_name, source_blob_name, destination_file_name):
+#     # Uploads a blob from a bucket
+#     storage_client = storage.Client()
+#     bucket = storage_client.get_bucket(bucket_name)
+#     blob = bucket.blob(source_blob_name)
+#
+#     blob.download_to_filename(destination_file_name)
+#
+#     print('Blob {} downloaded to {}.'.format(
+#         source_blob_name,
+#         destination_file_name))

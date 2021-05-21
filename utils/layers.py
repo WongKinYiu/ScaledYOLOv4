@@ -5,7 +5,18 @@ from utils.general import *
 import torch
 from torch import nn
 
-from mish_cuda import MishCuda as Mish
+try:
+    from mish_cuda import MishCuda as Mish
+    
+except:
+    class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
+        def forward(self, x):
+            return x * F.softplus(x).tanh()
+
+
+class Reorg(nn.Module):
+    def forward(self, x):
+        return torch.cat([x[..., ::2, ::2], x[..., 1::2, ::2], x[..., ::2, 1::2], x[..., 1::2, 1::2]], 1)
 
 
 def make_divisible(v, divisor):
@@ -178,10 +189,6 @@ class HardSwish(nn.Module):  # https://arxiv.org/pdf/1905.02244.pdf
         return x * F.hardtanh(x + 3, 0., 6., True) / 6.
 
 
-#class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
-#    def forward(self, x):
-#        return x * F.softplus(x).tanh()
-
 class DeformConv2d(nn.Module):
     def __init__(self, inc, outc, kernel_size=3, padding=1, stride=1, bias=None, modulation=False):
         """
@@ -321,3 +328,39 @@ class DeformConv2d(nn.Module):
         x_offset = x_offset.contiguous().view(b, c, h*ks, w*ks)
 
         return x_offset
+    
+    
+class GAP(nn.Module):
+    def __init__(self):
+        super(GAP, self).__init__()
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
+    def forward(self, x):
+        #b, c, _, _ = x.size()        
+        return self.avg_pool(x)#.view(b, c)
+    
+    
+class Silence(nn.Module):
+    def __init__(self):
+        super(Silence, self).__init__()
+    def forward(self, x):    
+        return x
+
+
+class ScaleChannel(nn.Module):  # weighted sum of 2 or more layers https://arxiv.org/abs/1911.09070
+    def __init__(self, layers):
+        super(ScaleChannel, self).__init__()
+        self.layers = layers  # layer indices
+
+    def forward(self, x, outputs):
+        a = outputs[self.layers[0]]
+        return x.expand_as(a) * a
+
+
+class ScaleSpatial(nn.Module):  # weighted sum of 2 or more layers https://arxiv.org/abs/1911.09070
+    def __init__(self, layers):
+        super(ScaleSpatial, self).__init__()
+        self.layers = layers  # layer indices
+
+    def forward(self, x, outputs):
+        a = outputs[self.layers[0]]
+        return x * a

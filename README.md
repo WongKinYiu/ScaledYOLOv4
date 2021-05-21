@@ -8,11 +8,20 @@ This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Netwo
 
 ```
 # create the docker container, you can change the share memory size if you have more.
-nvidia-docker run --name yolov4_csp -it -v your_coco_path/:/coco/ -v your_code_path/:/yolo --shm-size=64g nvcr.io/nvidia/pytorch:20.06-py3
+nvidia-docker run --name yolov4_csp -it -v your_coco_path/:/coco/ -v your_code_path/:/yolo --shm-size=64g nvcr.io/nvidia/pytorch:20.11-py3
 
-# install mish-cuda, if you use different pytorch version, you could try https://github.com/JunnYu/mish-cuda
+# apt install required packages
+apt update
+apt install -y zip htop screen libgl1-mesa-glx
+
+# pip install required packages
+pip install seaborn thop
+
+# install mish-cuda if you want to use mish activation
+# https://github.com/thomasbrandon/mish-cuda
+# https://github.com/JunnYu/mish-cuda
 cd /
-git clone https://github.com/thomasbrandon/mish-cuda
+git clone https://github.com/JunnYu/mish-cuda
 cd mish-cuda
 python setup.py build install
 
@@ -26,7 +35,7 @@ cd /yolo
 
 ```
 # download yolov4-csp.weights and put it in /yolo/weights/ folder.
-python test.py --img 640 --conf 0.001 --batch 8 --device 0 --data coco.yaml --cfg models/yolov4-csp.cfg --weights weights/yolov4-csp.weights
+python test.py --img 640 --conf 0.001 --iou 0.65 --batch 8 --device 0 --data coco.yaml --cfg models/yolov4-csp.cfg --weights weights/yolov4-csp.weights
 ```
 
 You will get the results:
@@ -54,8 +63,8 @@ python train.py --device 0 --batch-size 16 --data coco.yaml --cfg yolov4-csp.cfg
 
 For resume training:
 ```
-# assume the checkpoint is stored in runs/exp0_yolov4-csp/weights/.
-python train.py --device 0 --batch-size 16 --data coco.yaml --cfg yolov4-csp.cfg --weights 'runs/exp0_yolov4-csp/weights/last.pt' --name yolov4-csp --resume
+# assume the checkpoint is stored in runs/train/yolov4-csp/weights/.
+python train.py --device 0 --batch-size 16 --data coco.yaml --cfg yolov4-csp.cfg --weights 'runs/train/yolov4-csp/weights/last.pt' --name yolov4-csp --resume
 ```
 
 If you want to use multiple GPUs for training

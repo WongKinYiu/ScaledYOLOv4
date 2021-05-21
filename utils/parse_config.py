@@ -21,6 +21,7 @@ def parse_model_cfg(path):
             mdefs[-1]['type'] = line[1:-1].rstrip()
             if mdefs[-1]['type'] == 'convolutional':
                 mdefs[-1]['batch_normalize'] = 0  # pre-populate with zeros (may be overwritten later)
+        
         else:
             key, val = line.split("=")
             key = key.rstrip()
@@ -40,7 +41,7 @@ def parse_model_cfg(path):
     supported = ['type', 'batch_normalize', 'filters', 'size', 'stride', 'pad', 'activation', 'layers', 'groups',
                  'from', 'mask', 'anchors', 'classes', 'num', 'jitter', 'ignore_thresh', 'truth_thresh', 'random',
                  'stride_x', 'stride_y', 'weights_type', 'weights_normalization', 'scale_x_y', 'beta_nms', 'nms_kind',
-                 'iou_loss', 'iou_normalizer', 'cls_normalizer', 'iou_thresh']
+                 'iou_loss', 'iou_normalizer', 'cls_normalizer', 'iou_thresh', 'atoms', 'na', 'nc']
 
     f = []  # fields
     for x in mdefs[1:]:

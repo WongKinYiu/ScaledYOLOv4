@@ -139,3 +139,14 @@ python -m torch.distributed.launch --nproc_per_node 4 train.py --batch-size 64 -
   year={2020}
 }
 ```
+
+## Acknowledgements
+
+<details><summary> <b>Expand</b> </summary>
+
+* [https://github.com/AlexeyAB/darknet](https://github.com/AlexeyAB/darknet)
+* [https://github.com/WongKinYiu/PyTorch_YOLOv4](https://github.com/WongKinYiu/PyTorch_YOLOv4)
+* [https://github.com/ultralytics/yolov3](https://github.com/ultralytics/yolov3)
+* [https://github.com/ultralytics/yolov5](https://github.com/ultralytics/yolov5)
+
+</details>

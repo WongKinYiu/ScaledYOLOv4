@@ -2,6 +2,10 @@
 
 This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Network](https://arxiv.org/abs/2011.08036)" using PyTorch framwork.
 
+* [YOLOv4-CSP](https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-csp)
+* [YOLOv4-tiny](https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-tiny)
+* [YOLOv4-large](https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-large)
+
 | Model | Test Size | AP<sup>test</sup> | AP<sub>50</sub><sup>test</sup> | AP<sub>75</sub><sup>test</sup> | AP<sub>S</sub><sup>test</sup> | AP<sub>M</sub><sup>test</sup> | AP<sub>L</sub><sup>test</sup> | batch1 throughput |
 | :-- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | 
 | **YOLOv4-P5** | 896 | **51.4%** | **69.9%** | **56.3%** | **33.1%** | **55.4%** | **62.4%** | 41 *fps* |

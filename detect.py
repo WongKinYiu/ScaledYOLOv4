@@ -41,9 +41,12 @@ def detect(save_img=False):
 
     # Load model
     model = Darknet(cfg, imgsz).cuda()
-    model.load_state_dict(torch.load(weights[0], map_location=device)['model'])
-    #model = attempt_load(weights, map_location=device)  # load FP32 model
-    #imgsz = check_img_size(imgsz, s=model.stride.max())  # check img_size
+    try:
+        model.load_state_dict(torch.load(weights[0], map_location=device)['model'])
+        #model = attempt_load(weights, map_location=device)  # load FP32 model
+        #imgsz = check_img_size(imgsz, s=model.stride.max())  # check img_size
+    except:
+        load_darknet_weights(model, weights[0])
     model.to(device).eval()
     if half:
         model.half()  # to FP16

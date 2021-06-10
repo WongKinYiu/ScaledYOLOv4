@@ -90,7 +90,38 @@ def getShapes(shapes, labelName, positionXY, group_id, shape_type, flags):
 def createDirImage(image_dirPath):
     os.makedirs(image_dirPath)
 
+# # cal ratio
+# def calRatio(shapes):
+    
+#     w1 = 0
+#     h1 = 0
+    
+#     w2 = 0
+#     h2 = 0
 
+#     for data in shapes:
+
+#         # small (1)
+#         if data['label'] == "cup":
+#             w1 = data['points'][1][0]
+#             h1 = data['points'][1][1]
+
+#         # big   (2)
+#         if data['label'] == "disk":
+#             w2 = data['points'][1][0]
+#             h2 = data['points'][1][1]
+    
+#     if w1 < w2 and h1 < h2:
+#         ratio_w = w1 / w2
+#         ratio_h = h1 / h2
+#         print("")
+#         print("w1: {0}, h1: {1}, w2: {2}, h2: {3}".format(w1, h1, w2, h2))
+#         print("")
+#         print("ratio_w: {0}, ratio_h: {1}".format(ratio_w, ratio_h))
+#         print("")
+#     else:
+#         print("Width or height Error!")
+    
 
 def detect(save_img=False):
     out, source, weights, view_img, save_txt, imgsz = \
@@ -143,6 +174,7 @@ def detect(save_img=False):
 
         # shapes Data
         shapes = []
+        boxes = 0
 
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -192,9 +224,16 @@ def detect(save_img=False):
                     if save_img or view_img:  # Add bbox to image
                         label = '%s' % (names[int(cls)])
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=2)
+                        
+                        boxes += 1
 
                         # create shapes format
                         getShapes(shapes, names[int(cls)], torch.tensor(xyxy).view(1, 4).view(-1).tolist(), None, "rectangle", {})
+
+            # # cal Ratio
+            # if boxes == 2:
+            #     calRatio(shapes)
+
 
             # Print time (inference + NMS)
             print('%sDone. (%.3fs)' % (s, t2 - t1))

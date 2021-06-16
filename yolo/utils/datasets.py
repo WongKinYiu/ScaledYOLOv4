@@ -23,8 +23,8 @@ from copy import deepcopy
 from pycocotools import mask as maskUtils
 from torchvision.utils import save_image
 
-from utils.general import xyxy2xywh, xywh2xyxy
-from utils.torch_utils import torch_distributed_zero_first
+from yolo.utils.general import xyxy2xywh, xywh2xyxy
+from yolo.utils.torch_utils import torch_distributed_zero_first
 
 # Parameters
 help_url = 'https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data'
@@ -649,7 +649,7 @@ class LoadImagesAndLabels9(Dataset):  # for training/testing
 
         def img2label_paths(img_paths):
             # Define label paths as a function of image paths
-            sa, sb = os.sep + 'images' + os.sep, os.sep + 'labels' + os.sep  # /images/, /labels/ substrings
+            sa, sb = os.sep + 'JPEGImages' + os.sep, os.sep + 'labels' + os.sep  # /images/, /labels/ substrings
             return [x.replace(sa, sb, 1).replace(x.split('.')[-1], 'txt') for x in img_paths]
 
         try:
@@ -803,8 +803,8 @@ class LoadImagesAndLabels9(Dataset):  # for training/testing
                 shape = exif_size(im)  # image size
                 assert (shape[0] > 9) & (shape[1] > 9), 'image size <10 pixels'
                 if os.path.isfile(label):
-                    with open(label, 'r') as f:
-                        l = np.array([x.split() for x in f.read().splitlines()], dtype=np.float32)  # labels
+                    with open(label, 'r') as f:                        
+                        l = np.array([x.split() for x in f.read().splitlines() if len(x) > 0], dtype=np.float32)  # labels
                 if len(l) == 0:
                     l = np.zeros((0, 5), dtype=np.float32)
                 x[img] = [l, shape]

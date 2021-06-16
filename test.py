@@ -2,6 +2,7 @@ import argparse
 import glob
 import json
 import os
+import shutil
 from pathlib import Path
 
 import numpy as np
@@ -9,22 +10,23 @@ import torch
 import yaml
 from tqdm import tqdm
 
-from utils.google_utils import attempt_load
-from utils.datasets import create_dataloader
-from utils.general import coco80_to_coco91_class, check_dataset, check_file, check_img_size, box_iou, \
+from yolo.utils.google_utils import attempt_load
+from yolo.utils.datasets import create_dataloader
+from yolo.utils.general import coco80_to_coco91_class, check_dataset, check_file, check_img_size, box_iou, \
     non_max_suppression, scale_coords, xyxy2xywh, xywh2xyxy, clip_coords, set_logging, increment_path
-from utils.loss import compute_loss
-from utils.metrics import ap_per_class
-from utils.plots import plot_images, output_to_target
-from utils.torch_utils import select_device, time_synchronized
+from yolo.utils.loss import compute_loss
+from yolo.utils.metrics import ap_per_class
+from yolo.utils.plots import plot_images, output_to_target
+from yolo.utils.torch_utils import select_device, time_synchronized
 
-from models.models import *
+from yolo.models.models import *
 
 def load_classes(path):
     # Loads *.names file at 'path'
     with open(path, 'r') as f:
         names = f.read().split('\n')
     return list(filter(None, names))  # filter removes empty strings (such as last line)
+
 
 
 def test(data,
@@ -310,6 +312,7 @@ if __name__ == '__main__':
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
     parser.add_argument('--cfg', type=str, default='models/yolov4-csp.cfg', help='*.cfg path')
     parser.add_argument('--names', type=str, default='data/coco.names', help='*.cfg path')
+    parser.add_argument('--save-errors', help='Save the error cases to file', action='store_true')
     opt = parser.parse_args()
     opt.save_json |= opt.data.endswith('coco.yaml')
     opt.data = check_file(opt.data)  # check file

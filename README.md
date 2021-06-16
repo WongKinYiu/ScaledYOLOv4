@@ -101,10 +101,12 @@ python -m torch.distributed.launch --nproc_per_node 4 train.py --device 0,1,2,3 
 ## Citation
 
 ```
-@article{wang2020scaled,
-  title={{Scaled-YOLOv4}: Scaling Cross Stage Partial Network},
-  author={Wang, Chien-Yao and Bochkovskiy, Alexey and Liao, Hong-Yuan Mark},
-  journal={arXiv preprint arXiv:2011.08036},
-  year={2020}
+@InProceedings{Wang_2021_CVPR,
+    author    = {Wang, Chien-Yao and Bochkovskiy, Alexey and Liao, Hong-Yuan Mark},
+    title     = {Scaled-YOLOv4: Scaling Cross Stage Partial Network},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2021},
+    pages     = {13029-13038}
 }
 ```

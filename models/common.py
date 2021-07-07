@@ -4,8 +4,13 @@ import math
 import torch
 import torch.nn as nn
 
-#from mish_cuda import MishCuda as Mish
-import torch.nn.functional as F
+try:
+    from mish_cuda import MishCuda as Mish
+    
+except:
+    class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
+        def forward(self, x):
+            return MishFunction.apply(x)
 
 class Mish(nn.Module):
     def forward(self, x):
@@ -29,7 +34,7 @@ class Conv(nn.Module):
         super(Conv, self).__init__()
         self.conv = nn.Conv2d(c1, c2, k, s, autopad(k, p), groups=g, bias=False)
         self.bn = nn.BatchNorm2d(c2)
-        self.act = nn.Mish() if act else nn.Identity()
+        self.act = Mish() if act else nn.Identity()
 
     def forward(self, x):
         return self.act(self.bn(self.conv(x)))
@@ -61,7 +66,7 @@ class BottleneckCSP(nn.Module):
         self.cv3 = nn.Conv2d(c_, c_, 1, 1, bias=False)
         self.cv4 = Conv(2 * c_, c2, 1, 1)
         self.bn = nn.BatchNorm2d(2 * c_)  # applied to cat(cv2, cv3)
-        self.act = nn.Mish()
+        self.act = Mish()
         self.m = nn.Sequential(*[Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)])
 
     def forward(self, x):
@@ -79,7 +84,7 @@ class BottleneckCSP2(nn.Module):
         self.cv2 = nn.Conv2d(c_, c_, 1, 1, bias=False)
         self.cv3 = Conv(2 * c_, c2, 1, 1)
         self.bn = nn.BatchNorm2d(2 * c_) 
-        self.act = nn.Mish()
+        self.act = Mish()
         self.m = nn.Sequential(*[Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)])
 
     def forward(self, x):
@@ -132,7 +137,7 @@ class SPPCSP(nn.Module):
         self.cv5 = Conv(4 * c_, c_, 1, 1)
         self.cv6 = Conv(c_, c_, 3, 1)
         self.bn = nn.BatchNorm2d(2 * c_) 
-        self.act = nn.Mish()
+        self.act = Mish()
         self.cv7 = Conv(2 * c_, c2, 1, 1)
 
     def forward(self, x):

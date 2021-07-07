@@ -12,10 +12,6 @@ except:
         def forward(self, x):
             return MishFunction.apply(x)
 
-class Mish(nn.Module):
-    def forward(self, x):
-        return MishFunction.apply(x)
-
 def autopad(k, p=None):  # kernel, padding
     # Pad to 'same'
     if p is None:

@@ -11,7 +11,8 @@ try:
 except:
     class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
         def forward(self, x):
-            return x * F.softplus(x).tanh()
+            # return x * F.softplus(x).tanh()
+            return F.mish(x)    
 
 
 class Reorg(nn.Module):

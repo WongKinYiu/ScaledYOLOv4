@@ -3,8 +3,16 @@ import math
 
 import torch
 import torch.nn as nn
-
-from mish_cuda import MishCuda as Mish
+try:
+    from mish_cuda import MishCuda as Mish
+except Exception as e:
+    print(e)
+    class Mish(nn.Module):
+        def __init__(self):
+            super().__init__()
+        def forward(self,x):
+            x = x * (torch.tanh(F.softplus(x)))
+            return x
 
 
 def autopad(k, p=None):  # kernel, padding

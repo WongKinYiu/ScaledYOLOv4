@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import glob
 import math
 import os
@@ -1081,14 +1082,21 @@ def fitness(x):
     return (x[:, :4] * w).sum(1)
 
 
+# +
 def output_to_target(output, width, height):
     # Convert model output to target format [batch_id, class_id, x, y, w, h, conf]
+#     output = output.cpu().numpy()
     if isinstance(output, torch.Tensor):
+        # 修改
         output = output.cpu().numpy()
-
+    
     targets = []
     for i, o in enumerate(output):
         if o is not None:
+            #=========新增===========
+            if isinstance(o, torch.Tensor):
+                o = o.cpu().numpy()
+            #========================
             for pred in o:
                 box = pred[:4]
                 w = (box[2] - box[0]) / width
@@ -1100,8 +1108,12 @@ def output_to_target(output, width, height):
 
                 targets.append([i, cls, x, y, w, h, conf])
 
+#     return np.array(targets)
     return np.array(targets)
 
+
+
+# -
 
 def increment_dir(dir, comment=''):
     # Increments a directory runs/exp1 --> runs/exp2_comment

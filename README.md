@@ -51,6 +51,8 @@ cd /
 git clone https://github.com/JunnYu/mish-cuda
 cd mish-cuda
 python setup.py build install
+# On TWCC, try:
+python setup.py build install --user
 
 # go to code folder
 cd /yolo

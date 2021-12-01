@@ -1091,10 +1091,10 @@ def output_to_target(output, width, height):
     targets = []
     for i, o in enumerate(output):
         if o is not None:
-            #=========新增===========
+            #=========For Numpy 1.21===========
             if isinstance(o, torch.Tensor):
                 o = o.cpu().numpy()
-            #========================
+            #==================================
             for pred in o:
                 box = pred[:4]
                 w = (box[2] - box[0]) / width

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import argparse
 import math
 import os
@@ -295,7 +294,7 @@ def train(hyp, opt, device, tb_writer=None):
             # end batch ------------------------------------------------------------------------------------------------
 
         # Scheduler
-#         scheduler.step()
+        scheduler.step()
 
         # DDP process 0 or single-GPU
         if rank in [-1, 0]:
@@ -349,10 +348,6 @@ def train(hyp, opt, device, tb_writer=None):
                 if best_fitness == fi:
                     torch.save(ckpt, best)
                 del ckpt
-                
-        # 修改 'Detected call of `lr_scheduler.step()` before `optimizer.step()'
-        scheduler.step() 
-        
         # end epoch ----------------------------------------------------------------------------------------------------
     # end training
 
@@ -371,11 +366,10 @@ def train(hyp, opt, device, tb_writer=None):
             plot_results(save_dir=log_dir)  # save as results.png
         print('%g epochs completed in %.3f hours.\n' % (epoch - start_epoch + 1, (time.time() - t0) / 3600))
 
-       
-        
     dist.destroy_process_group() if rank not in [-1, 0] else None
     torch.cuda.empty_cache()
     return results
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

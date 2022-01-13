@@ -68,7 +68,7 @@ class Model(nn.Module):
         # Define model
         if nc and nc != self.yaml['nc']:
             print('Overriding %s nc=%g with nc=%g' % (cfg, self.yaml['nc'], nc))
-            self.yaml['nc'] = nc  # override yaml value
+            self.yaml['nc'] = nc  # override yaml value # 更新 yolov4-xxx.yaml 的class個數
         self.model, self.save = parse_model(deepcopy(self.yaml), ch=[ch])  # model, savelist, ch_out
         # print([x.shape for x in self.forward(torch.zeros(1, ch, 64, 64))])
 
@@ -89,6 +89,7 @@ class Model(nn.Module):
         print('')
 
     def forward(self, x, augment=False, profile=False):
+        # print('forward x = ', x.shape)
         if augment:
             img_size = x.shape[-2:]  # height, width
             s = [1, 0.83, 0.67]  # scales
@@ -109,11 +110,15 @@ class Model(nn.Module):
             return self.forward_once(x, profile)  # single-scale inference, train
 
     def forward_once(self, x, profile=False):
+        # print('forward_once x =', x.shape)
+        
         y, dt = [], []  # outputs
         for m in self.model:
+            # print('model x =', x.shape)
+            # print('model m = ', m)
             if m.f != -1:  # if not from previous layer
                 x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]  # from earlier layers
-
+                # print('change model x =', x.shape)
             if profile:
                 try:
                     import thop
@@ -125,7 +130,7 @@ class Model(nn.Module):
                     _ = m(x)
                 dt.append((time_synchronized() - t) * 100)
                 print('%10.1f%10.0f%10.1fms %-40s' % (o, m.np, dt[-1], m.type))
-
+            
             x = m(x)  # run
             y.append(x if m.i in self.save else None)  # save output
 
@@ -138,8 +143,8 @@ class Model(nn.Module):
         m = self.model[-1]  # Detect() module
         for mi, s in zip(m.m, m.stride):  # from
             b = mi.bias.view(m.na, -1)  # conv.bias(255) to (3,85)
-            b[:, 4] += math.log(8 / (640 / s) ** 2)  # obj (8 objects per 640 image)
-            b[:, 5:] += math.log(0.6 / (m.nc - 0.99)) if cf is None else torch.log(cf / cf.sum())  # cls
+            b[:, 4].data += math.log(8 / (640 / s) ** 2)  # obj (8 objects per 640 image)
+            b[:, 5:].data += math.log(0.6 / (m.nc - 0.99)) if cf is None else torch.log(cf / cf.sum())  # cls
             mi.bias = torch.nn.Parameter(b.view(-1), requires_grad=True)
 
     def _print_biases(self):
@@ -167,7 +172,7 @@ class Model(nn.Module):
     def info(self):  # print model information
         model_info(self)
 
-
+# 載入yaml檔的參數
 def parse_model(d, ch):  # model_dict, input_channels(3)
     print('\n%3s%18s%3s%10s  %-40s%-30s' % ('', 'from', 'n', 'params', 'module', 'arguments'))
     anchors, nc, gd, gw = d['anchors'], d['nc'], d['depth_multiple'], d['width_multiple']
@@ -185,7 +190,12 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
 
         n = max(round(n * gd), 1) if n > 1 else n  # depth gain
         if m in [nn.Conv2d, Conv, Bottleneck, SPP, DWConv, MixConv2d, Focus, CrossConv, BottleneckCSP, BottleneckCSP2, SPPCSP, VoVCSP, C3]:
+            # print('ch = ',ch)
             c1, c2 = ch[f], args[0]
+            
+            # 強制更改第6,8位的ch數
+            if f in [6,8]:
+                c1 = ch[f+1]
 
             # Normal
             # if i > 0 and args[0] != no:  # channel expansion factor
@@ -210,8 +220,10 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
                 args.insert(2, n)
                 n = 1
         elif m in [HarDBlock, HarDBlock2]:
-            c1 = ch[f]
-            args = [c1, *args[:]]
+            # c1 = ch[f]
+            # args = [c1, *args[:]]
+            # 更改
+            args = [*args[:]]
         elif m is nn.BatchNorm2d:
             args = [ch[f]]
         elif m is Concat:
@@ -235,6 +247,9 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
             ch.append(c2)
         else:
             ch.append(c2)
+    
+    
+    
     return nn.Sequential(*layers), sorted(save)
 
 

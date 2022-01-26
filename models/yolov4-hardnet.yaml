@@ -9,9 +9,9 @@ anchors:
   - [36,75, 76,55, 72,146]  # P4/16
   - [142,110, 192,243, 459,401]  # P5/32
 
-# yolov4-csp backbone
+# yolov4-HarDNet backbone
 backbone:
-  # [from=save model position, number, module, args=set model args]
+  # [from=save model position, number, module, args=set model args] HarDNet-39
   [[-1, 1, Conv, [32, 3, 1]],  # 0
     [-1, 1, Conv, [48, 3, 2]],  # 1-P1/2
     [-1, 1, HarDBlock2, [48, 16, 1.6, 4, True]],
@@ -23,6 +23,20 @@ backbone:
     [-1, 1, HarDBlock2, [640, 160, 1.6, 4, True]],
     [-1, 1, Conv, [1024, 3, 2]], 
   ]
+# [from=save model position, number, module, args=set model args] HarDNet-68
+#   [[-1, 1, Conv, [32, 3, 1]],  # 0
+#     [-1, 1, Conv, [64, 3, 2]],  # 1-P1/2
+#     [-1, 1, HarDBlock2, [48, 16, 1.7, 8, True]],
+#     [-1, 1, Conv, [128, 3, 2]],  # 3-P2/4
+#     [-1, 1, HarDBlock2, [96, 20, 1.7, 16, True]],
+#     [-1, 1, Conv, [256, 3, 2]],  # 5-P3/8
+#     [-1, 1, HarDBlock2, [320, 64, 1.7, 16, True]],
+#     [-1, 1, Conv, [320, 3, 2]],  # 7-P4/16
+#     [-1, 1, HarDBlock2, [640, 160, 1.7, 16, True]],
+#     [-1, 1, Conv, [640, 3, 2]],
+#     [-1, 1, HarDBlock2, [640, 160, 1.7, 4, True]],
+#     [-1, 1, Conv, [1024, 3, 2]],  
+#   ]  
   
 # yolov4-csp backbone
 # backbone:

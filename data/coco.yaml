@@ -1,7 +1,12 @@
 # train and val datasets (image directory or *.txt file with image paths)
-train: ../coco/train2017.txt  # 118k images
-val: ../coco/val2017.txt  # 5k images
-test: ../coco/testdev2017.txt  # 20k images for submission to https://competitions.codalab.org/competitions/20794
+# COCO128 dataset https://www.kaggle.com/ultralytics/coco128 (first 128 images from COCO train2017) by Ultralytics
+# parent
+# ├── yolov5
+# └── datasets
+#     └── coco128  ← downloads here (7 MB)
+train: ../datasets/coco128/images/train2017  # 118k images
+val: ../datasets/coco128/images/train2017  # 5k images
+test:  # 20k images for submission to https://competitions.codalab.org/competitions/20794
 
 # number of classes
 nc: 80

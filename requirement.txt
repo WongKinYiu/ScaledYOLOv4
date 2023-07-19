@@ -1,0 +1,12 @@
+pandas==1.4.4
+numpy==1.21.5
+opencv-python==4.7.0.72
+matplotlib==3.5.2
+seaborn==0.11.2
+tqdm==4.64.1
+Pillow==9.5.0
+PyYAML>=5.3.1
+requests>=2.23.0
+scipy>=1.4.1
+thop
+tensorboard>=2.4.1

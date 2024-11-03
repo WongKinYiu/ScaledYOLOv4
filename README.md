@@ -4,7 +4,7 @@ This is the implementation of "[Scaled-YOLOv4: Scaling Cross Stage Partial Netwo
 
 * **2021.05.21** Due to unknown issue some people can not reproduce the performance in paper and I can not reproduce the [issue#89](https://github.com/WongKinYiu/ScaledYOLOv4/issues/89), I update the codebase. But it will makes the reproduce performance becomes better than paper (47.8 AP -> 48.7 AP).
 
-* **2020.11.16** Now supported by [Darknet](https://github.com/AlexeyAB/darknet). [`yolov4-csp.cfg`](https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-csp.cfg) [`yolov4-csp.weights`](https://drive.google.com/file/d/1TdKvDQb2QpP4EhOIyks8kgT8dgI1iOWT/view?usp=sharing)
+* **2020.11.16** Now supported by [Darknet](https://github.com/AlexeyAB/darknet). [`yolov4-csp.cfg`](https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-csp.cfg) [`yolov4-csp.weights`](https://github.com/WongKinYiu/ScaledYOLOv4/releases/download/weights/yolov4-csp-new.weights)
 
 ## Installation
 
@@ -33,11 +33,11 @@ cd /yolo
 
 ## Testing
 
-[`yolov4-csp.weights`](https://drive.google.com/file/d/1TdKvDQb2QpP4EhOIyks8kgT8dgI1iOWT/view?usp=sharing)
+[`yolov4-csp.weights`](https://github.com/WongKinYiu/ScaledYOLOv4/releases/download/weights/yolov4-csp-new.weights)
 
 <details><summary> <b>old weights</b> </summary>
  
-[`yolov4-csp.weights`](https://drive.google.com/file/d/1NQwz47cW0NUgy7L3_xOKaNEfLoQuq3EL/view?usp=sharing)
+[`yolov4-csp.weights`](https://github.com/WongKinYiu/ScaledYOLOv4/releases/download/weights/yolov4-csp.weights)
 
 </details>
 

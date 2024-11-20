@@ -16,8 +16,8 @@ import yaml
 from PIL import Image
 from scipy.signal import butter, filtfilt
 
-from utils.general import xywh2xyxy, xyxy2xywh
-from utils.metrics import fitness
+from yolo.utils.general import xywh2xyxy, xyxy2xywh
+from yolo.utils.metrics import fitness
 
 # Settings
 matplotlib.use('Agg')  # for writing to files only

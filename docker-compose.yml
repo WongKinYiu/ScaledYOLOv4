@@ -1,0 +1,24 @@
+---
+version: '2.3'
+
+services:
+  train:
+    image: gcr.io/kinsol-generic/yolov4-csp:${TAG:-dev}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    runtime: nvidia
+    volumes:
+      - .:/home/dev
+      - /mnt/NAS/Production/TruckBay/:/mnt/NAS/Production/TruckBay
+      - /mnt/NAS/Public/parque_research/datasets/coco_yolo/coco:/mnt/coco
+      - /home/kweston/darknet_utils:/home/kweston/darknet_utils
+      - /home/kweston/speedco/baywatchr-inference/speedco_dataset:/mnt/speedco_dataset
+      - /home/kweston/speedco/baywatchr-inference/data/lists:/mnt/speedco_datalists
+      - /data/kweston/sandbox/mlannotation/results:/results
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/baywatchr-api-key.json
+    command: 
+      - bash
+    shm_size: 64g
+    working_dir: /home/dev

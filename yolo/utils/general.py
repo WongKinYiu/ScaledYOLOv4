@@ -17,9 +17,9 @@ import numpy as np
 import torch
 import yaml
 
-from utils.google_utils import gsutil_getsize
-from utils.metrics import fitness, fitness_p, fitness_r, fitness_ap50, fitness_ap, fitness_f   
-from utils.torch_utils import init_torch_seeds
+from yolo.utils.google_utils import gsutil_getsize
+from yolo.utils.metrics import fitness, fitness_p, fitness_r, fitness_ap50, fitness_ap, fitness_f   
+from yolo.utils.torch_utils import init_torch_seeds
 
 # Set printoptions
 torch.set_printoptions(linewidth=320, precision=5, profile='long')
